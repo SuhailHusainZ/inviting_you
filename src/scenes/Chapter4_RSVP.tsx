@@ -59,12 +59,13 @@ export default function Chapter4_RSVP() {
           Chapter III
         </span> */}
         <h2 className="font-cursive text-royal-gold text-5xl md:text-6xl tracking-wide filter drop-shadow-[0_2px_8px_rgba(212,175,55,0.25)]">
-          The RSVP
-        </h2>
-        <div className="h-[1px] w-20 mx-auto bg-gradient-to-r from-transparent via-royal-gold to-transparent my-3" />
-        <p className="font-serif text-stone-400 text-sm max-w-md mx-auto uppercase tracking-[0.2em]">
+          {/* The RSVP */}
           Honour us with your gracious presence
-        </p>
+        </h2>
+        {/* <div className="h-[1px] w-20 mx-auto bg-gradient-to-r from-transparent via-royal-gold to-transparent my-3" /> */}
+        {/* <p className="font-serif text-stone-400 text-sm max-w-md mx-auto uppercase tracking-[0.2em]">
+          Honour us with your gracious presence
+        </p> */}
       </motion.div>
 
       {/* Envelope / RSVP Area */}
@@ -89,11 +90,11 @@ export default function Chapter4_RSVP() {
               </svg>
 
               {/* Invitation Text on Envelope */}
-              <span className="font-serif text-[11px] uppercase tracking-[0.3em] text-[#5c4327] mb-2 font-bold block">
+              {/* <span className="font-serif text-[11px] uppercase tracking-[0.3em] text-[#5c4327] mb-2 font-bold block">
                 To the Royal Guests
-              </span>
+              </span> */}
               <h3 className="font-cursive text-royal-crimson text-3xl tracking-wide mb-6">
-                Suhail & Nahitha
+                Suhail  &  Nahitha
               </h3>
 
               {/* Pulsing Wax Heart Seal (Click to Open) */}
@@ -107,7 +108,7 @@ export default function Chapter4_RSVP() {
                 <Heart className="w-8 h-8 text-royal-gold-light fill-royal-gold-light/20 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]" />
               </motion.button>
               <span className="font-serif text-[10px] uppercase tracking-[0.2em] text-stone-600 mt-4 animate-pulse">
-                Click Seal to Open
+                Open The Seal
               </span>
             </motion.div>
           ) : !isSubmitted ? (

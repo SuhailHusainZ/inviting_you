@@ -63,7 +63,7 @@ export default function Chapter2_LoveStory() {
                 The Groom
               </span>
               <h3 className="font-cursive text-white text-4xl tracking-wide">
-                Suhail
+                Suhail Husain Z
               </h3>
             </div>
           </div>
@@ -98,7 +98,7 @@ export default function Chapter2_LoveStory() {
                 The Bride
               </span>
               <h3 className="font-cursive text-white text-4xl tracking-wide">
-                Nahitha
+                Nahitha Nazrin S
               </h3>
             </div>
           </div>

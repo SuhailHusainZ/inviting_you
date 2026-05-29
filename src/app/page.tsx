@@ -7,6 +7,7 @@ import { audioEngine } from "@/audio/AudioEngine";
 // Components
 import Preloader from "@/components/Preloader";
 import ScenicCanvas from "@/particles/ScenicCanvas";
+import FallingPetals from "@/components/FallingPetals";
 
 // Scenes
 import Chapter1_Reveal from "@/scenes/Chapter1_Reveal";
@@ -78,6 +79,9 @@ export default function Home() {
       {/* 1. Cinematic Film Grain Celluloid Texture Overlay */}
       <div className="film-grain" />
 
+      {/* Fullscreen falling rose petals decorative animation */}
+      <FallingPetals />
+
       {/* 2. Interactive Preloader Rope Pull Gate */}
       {!isEntered && <Preloader onEnter={handleEnterPalace} />}
 
@@ -85,8 +89,8 @@ export default function Home() {
       {isEntered && <ScenicCanvas scrollProgress={scrollProgress} />}
 
       {/* 4. Cinematic Letterbox Bars (Top & Bottom black bars to frame like a 21:9 movie) */}
-      <div className="fixed top-0 inset-x-0 h-6 md:h-10 bg-black z-40 border-b border-royal-gold/10 pointer-events-none transition-transform duration-1000" />
-      <div className="fixed bottom-0 inset-x-0 h-6 md:h-10 bg-black z-40 border-t border-royal-gold/10 pointer-events-none transition-transform duration-1000" />
+      {/* <div className="fixed top-0 inset-x-0 h-6 md:h-10 bg-black z-40 border-b border-royal-gold/10 pointer-events-none transition-transform duration-1000" />
+      <div className="fixed bottom-0 inset-x-0 h-6 md:h-10 bg-black z-40 border-t border-royal-gold/10 pointer-events-none transition-transform duration-1000" /> */}
 
       {/* 5. Main Story Page Scenes (Animated Reveal once entered) */}
       <div
