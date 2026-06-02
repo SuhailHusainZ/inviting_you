@@ -2,6 +2,9 @@
 
 import React, { useEffect, useRef } from "react";
 
+const TARGET_FPS = 90;
+const TARGET_FRAME_MS = 1000 / TARGET_FPS;
+
 interface Petal {
   x: number;
   y: number;
@@ -217,20 +220,29 @@ export default function FallingPetals() {
 
     let width = (canvas.width = window.innerWidth);
     let height = (canvas.height = window.innerHeight);
-    let dpr = window.devicePixelRatio || 1;
+    let dpr = 1;
+    let lastFrameTime = performance.now();
+
+    const getRenderDpr = () => {
+      const rawDpr = window.devicePixelRatio || 1;
+      const mobileViewport = window.matchMedia("(max-width: 768px)").matches;
+      return Math.min(rawDpr, mobileViewport ? 1 : 1.25);
+    };
 
     // Adjust canvas resolution for high-DPI screens
     const handleResize = () => {
       width = window.innerWidth;
       height = window.innerHeight;
-      dpr = window.devicePixelRatio || 1;
+      dpr = getRenderDpr();
 
       canvas.width = width * dpr;
       canvas.height = height * dpr;
+      canvas.style.width = `${width}px`;
+      canvas.style.height = `${height}px`;
 
       // Adjust particle count dynamically based on the viewport area (Density Control)
       const area = width * height;
-      const targetCount = Math.min(Math.max(Math.floor(area / 26000), 16), 65);
+      const targetCount = Math.min(Math.max(Math.floor(area / 32000), 14), 48);
 
       // Re-initialize or adjust petals array to maintain density without resets
       const currentCount = petalsRef.current.length;
@@ -248,7 +260,7 @@ export default function FallingPetals() {
 
     // Spawn initial layout of petals across the screen (not just at the top) to prevent reset gaps on load
     const area = width * height;
-    const initialCount = Math.min(Math.max(Math.floor(area / 26000), 16), 65);
+    const initialCount = Math.min(Math.max(Math.floor(area / 32000), 14), 48);
     petalsRef.current = Array.from({ length: initialCount }, () => createPetal(width, height, false));
 
     // Handle mouse movement to influence sway
@@ -267,7 +279,10 @@ export default function FallingPetals() {
     window.addEventListener("touchmove", handleTouchMove, { passive: true });
 
     // Core Animation Frame Loop
-    const animate = () => {
+    const animate = (time: number) => {
+      const frameScale = Math.min((time - lastFrameTime) / TARGET_FRAME_MS, 2);
+      lastFrameTime = time;
+
       // Clear with transparent background
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -276,7 +291,8 @@ export default function FallingPetals() {
       ctx.scale(dpr, dpr);
 
       // Smoothly interpolate mouse movement influence
-      mouseRef.current.currentX += (mouseRef.current.targetX - mouseRef.current.currentX) * 0.05;
+      const mouseEase = 1 - Math.pow(0.95, frameScale);
+      mouseRef.current.currentX += (mouseRef.current.targetX - mouseRef.current.currentX) * mouseEase;
 
       const petals = petalsRef.current;
       const offscreenCanvases = offscreenCanvasesRef.current;
@@ -285,21 +301,21 @@ export default function FallingPetals() {
         const p = petals[i];
 
         // 1. Update Physics
-        p.y += p.speedY;
+        p.y += p.speedY * frameScale;
         
         // Sway calculation (combination of natural sin-wave breeze & mouse drag)
-        p.swayPhase += p.swaySpeed;
+        p.swayPhase += p.swaySpeed * frameScale;
         const sway = Math.sin(p.swayPhase) * p.swayAmplitude;
-        p.x += p.speedX + (sway + mouseRef.current.currentX * 0.08) * (p.z * 0.7 + 0.3);
+        p.x += (p.speedX + (sway + mouseRef.current.currentX * 0.08) * (p.z * 0.7 + 0.3)) * frameScale;
 
         // Rotation angles
-        p.rotation2D += p.rotation2DSpeed;
-        p.flipX += p.flipXSpeed;
-        p.flipY += p.flipYSpeed;
+        p.rotation2D += p.rotation2DSpeed * frameScale;
+        p.flipX += p.flipXSpeed * frameScale;
+        p.flipY += p.flipYSpeed * frameScale;
 
         // Smoothly fade in when newly spawned
         if (p.opacity < 1) {
-          p.opacity += 0.02;
+          p.opacity += 0.02 * frameScale;
           if (p.opacity > 1) p.opacity = 1;
         }
 
@@ -328,14 +344,7 @@ export default function FallingPetals() {
         // Apply opacity (deeper background layers are naturally dimmer/softer)
         ctx.globalAlpha = p.opacity * (p.z * 0.5 + 0.5);
 
-        // Optional depth blur for foreground items to simulate lens blur/bokeh
-        if (p.z > 1.15) {
-          ctx.filter = "blur(1.5px)";
-        } else if (p.z < 0.45) {
-          ctx.filter = "blur(0.8px)"; // Soft background distance blur
-        } else {
-          ctx.filter = "none";
-        }
+        ctx.filter = "none";
 
         // Draw pre-rendered texture centered
         const renderSize = p.size;
@@ -349,7 +358,7 @@ export default function FallingPetals() {
     };
 
     // Start loop
-    animate();
+    requestRef.current = requestAnimationFrame(animate);
 
     // Clean up all events and timers
     return () => {

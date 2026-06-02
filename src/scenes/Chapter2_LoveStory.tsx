@@ -52,6 +52,7 @@ export default function Chapter2_LoveStory() {
               src="/images/2_the_groom.png"
               alt="The Groom - Suhail Husain Z"
               fill
+              sizes="(min-width: 1024px) 450px, 90vw"
               className="object-cover group-hover:scale-105 transition-transform duration-[2.5s] ease-out"
             />
             {/* Lighting Overlay */}
@@ -69,7 +70,7 @@ export default function Chapter2_LoveStory() {
           </div>
           {/* Story text */}
           <p className="font-serif text-stone-300 text-center text-md leading-relaxed max-w-sm mt-6 group-hover:text-stone-100 transition-colors duration-500">
-            "Dressed in hand-embroidered royal threads, his eyes capture the vision of a shared future, filled with devotion, strength, and endless love."
+            &quot;Dressed in hand-embroidered royal threads, his eyes capture the vision of a shared future, filled with devotion, strength, and endless love.&quot;
           </p>
         </motion.div>
 
@@ -87,6 +88,7 @@ export default function Chapter2_LoveStory() {
               src="/images/3_the_bride.png"
               alt="The Bride - Nahitha Nazrin S"
               fill
+              sizes="(min-width: 1024px) 450px, 90vw"
               className="object-cover group-hover:scale-105 transition-transform duration-[2.5s] ease-out"
             />
             {/* Lighting Overlay */}
@@ -104,7 +106,7 @@ export default function Chapter2_LoveStory() {
           </div>
           {/* Story text */}
           <p className="font-serif text-stone-300 text-center text-md leading-relaxed max-w-sm mt-6 group-hover:text-stone-100 transition-colors duration-500">
-            "Draped in radiant imperial crimson with delicate golden accents, her spirit shines bright as she steps gracefully towards a new beginning."
+            &quot;Draped in radiant imperial crimson with delicate golden accents, her spirit shines bright as she steps gracefully towards a new beginning.&quot;
           </p>
         </motion.div>
 
@@ -123,6 +125,7 @@ export default function Chapter2_LoveStory() {
             src="/images/5_both.png"
             alt="Suhail and Nahitha - The Union"
             fill
+            sizes="(min-width: 1024px) 960px, 90vw"
             className="object-cover object-center group-hover:scale-102 transition-transform duration-[3s] ease-out"
           />
           {/* Dark Overlay */}
@@ -142,7 +145,7 @@ export default function Chapter2_LoveStory() {
               </h3>
             </div>
             <p className="font-serif text-stone-300 text-xs md:text-sm max-w-xs md:max-w-md text-left leading-relaxed">
-              "We took our first breath of love in silence. Now, before God and our loved ones, we write our vow across the stars."
+              &quot;We took our first breath of love in silence. Now, before God and our loved ones, we write our vow across the stars.&quot;
             </p>
           </div>
         </div>

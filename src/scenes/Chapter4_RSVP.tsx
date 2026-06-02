@@ -19,7 +19,7 @@ export default function Chapter4_RSVP() {
       const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav");
       audio.volume = 0.25;
       audio.play().catch(() => { });
-    } catch (e) { }
+    } catch { }
     setIsOpen(true);
   };
 
@@ -30,7 +30,7 @@ export default function Chapter4_RSVP() {
       const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2019/2019-84.wav");
       audio.volume = 0.3;
       audio.play().catch(() => { });
-    } catch (e) { }
+    } catch { }
     setIsSubmitted(true);
   };
 
@@ -42,6 +42,7 @@ export default function Chapter4_RSVP() {
           src="/images/1.Invitation.png"
           alt="Vintage Envelope theme"
           fill
+          sizes="100vw"
           className="object-cover object-center filter blur-sm scale-102"
         />
         <div className="absolute inset-0 bg-black/80" />

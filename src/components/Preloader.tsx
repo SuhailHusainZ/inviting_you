@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion, useMotionValue, useTransform, useAnimate } from "framer-motion";
 import { Sparkles, Unlock } from "lucide-react";
 
@@ -20,25 +20,7 @@ export default function Preloader({ onEnter }: PreloaderProps) {
   const glowScale = useTransform(dragY, [0, 120], [1, 2.2]);
   const textOpacity = useTransform(dragY, [0, 100], [1, 0.2]);
 
-  // Monitor drag value to trigger unlock
-  useEffect(() => {
-    const unsubscribe = dragY.on("change", (latest) => {
-      if (latest >= 120 && !isUnlocked) {
-        setIsUnlocked(true);
-        triggerUnlockSequence();
-      }
-    });
-    return () => unsubscribe();
-  }, [dragY, isUnlocked]);
-
-  const triggerUnlockSequence = async () => {
-    // Play unlock chime sound (will be integrated with AudioEngine)
-    try {
-      const audio = new Audio("https://assets.mixkit.co/active_storage/sfx/2568/2568-84.wav");
-      audio.volume = 0.35;
-      audio.play().catch(() => {});
-    } catch (e) {}
-
+  const triggerUnlockSequence = useCallback(async () => {
     // Animate gate doors splitting and sliding away
     await Promise.all([
       animate("#left-gate", { x: "-100%", opacity: 0 }, { duration: 1.8, ease: [0.77, 0, 0.175, 1] }),
@@ -48,7 +30,18 @@ export default function Preloader({ onEnter }: PreloaderProps) {
     ]);
 
     onEnter();
-  };
+  }, [animate, onEnter]);
+
+  // Monitor drag value to trigger unlock
+  useEffect(() => {
+    const unsubscribe = dragY.on("change", (latest) => {
+      if (latest >= 120 && !isUnlocked) {
+        setIsUnlocked(true);
+        triggerUnlockSequence();
+      }
+    });
+    return () => unsubscribe();
+  }, [dragY, isUnlocked, triggerUnlockSequence]);
 
   return (
     <div
@@ -156,22 +149,6 @@ export default function Preloader({ onEnter }: PreloaderProps) {
             Drag the golden tassel downward to unveil the royal invitation
           </p>
         </motion.div>
-      </div>
-
-      {/* Floating Sparkle Emitters around screen */}
-      <div className="absolute inset-0 pointer-events-none z-20">
-        {[...Array(12)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-royal-gold rounded-full opacity-35 filter blur-[0.5px]"
-            style={{
-              top: `${Math.random() * 80 + 10}%`,
-              left: `${Math.random() * 80 + 10}%`,
-              animation: `float ${Math.random() * 6 + 6}s ease-in-out infinite`,
-              animationDelay: `${Math.random() * 5}s`,
-            }}
-          />
-        ))}
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Lenis from "lenis";
 import { audioEngine } from "@/audio/AudioEngine";
 
@@ -15,10 +15,15 @@ import Chapter2_LoveStory from "@/scenes/Chapter2_LoveStory";
 import Chapter3_Events from "@/scenes/Chapter3_Events";
 import Chapter4_RSVP from "@/scenes/Chapter4_RSVP";
 
+interface LenisScrollEvent {
+  scroll: number;
+}
+
 export default function Home() {
   const [isEntered, setIsEntered] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
   const [isMuted, setIsMuted] = useState(false);
+  const scrollProgressRef = useRef(0);
 
   // Initialize Lenis smooth scroll and monitor scroll position
   useEffect(() => {
@@ -31,20 +36,33 @@ export default function Home() {
       touchMultiplier: 1.5,
     });
 
+    let lenisFrame = 0;
+    let progressFrame = 0;
+
     function raf(time: number) {
       lenis.raf(time);
-      requestAnimationFrame(raf);
+      lenisFrame = requestAnimationFrame(raf);
     }
 
-    requestAnimationFrame(raf);
+    lenisFrame = requestAnimationFrame(raf);
 
-    lenis.on("scroll", (e: any) => {
+    lenis.on("scroll", (e: LenisScrollEvent) => {
       const scrollY = e.scroll;
       const scrollHeight = document.documentElement.scrollHeight;
       const clientHeight = window.innerHeight;
       const maxScroll = scrollHeight - clientHeight;
       const progress = maxScroll > 0 ? scrollY / maxScroll : 0;
-      setScrollProgress(progress);
+      scrollProgressRef.current = progress;
+
+      if (!progressFrame) {
+        progressFrame = requestAnimationFrame(() => {
+          progressFrame = 0;
+          setScrollProgress((current) => {
+            const next = scrollProgressRef.current;
+            return Math.abs(next - current) > 0.002 ? next : current;
+          });
+        });
+      }
 
       // Blends sound loops according to progress
       if (audioEngine) {
@@ -53,6 +71,8 @@ export default function Home() {
     });
 
     return () => {
+      cancelAnimationFrame(lenisFrame);
+      cancelAnimationFrame(progressFrame);
       lenis.destroy();
     };
   }, [isEntered]);

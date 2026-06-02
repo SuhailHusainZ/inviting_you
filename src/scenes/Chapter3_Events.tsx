@@ -57,6 +57,7 @@ export default function Chapter3_Events() {
           src="/images/4_both_walk.png"
           alt="Walk down the aisle"
           fill
+          sizes="100vw"
           className="object-cover object-center scale-102"
         />
         {/* Soft, deep overlay to make text pop out beautifully */}
@@ -136,7 +137,7 @@ export default function Chapter3_Events() {
             {/* Note/Description */}
             <div className="mt-8 text-center">
               <p className="font-serif text-stone-700 italic text-xs leading-relaxed max-w-[240px] mx-auto">
-                "{event.note}"
+                &quot;{event.note}&quot;
               </p>
 
               {/* Bottom Filigree Accent */}

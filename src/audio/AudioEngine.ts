@@ -20,7 +20,6 @@ class AudioEngine {
     // Standard royal-sounding ambient strings/pad loop
     this.ambient = new Howl({
       src: ["https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3"],
-      html5: true,
       loop: true,
       volume: 0,
     });
@@ -28,7 +27,6 @@ class AudioEngine {
     // Elegant orchestral piano/flute track for high engagement zones
     this.orchestral = new Howl({
       src: ["https://www.soundhelix.com/examples/mp3/SoundHelix-Song-12.mp3"],
-      html5: true,
       loop: true,
       volume: 0,
     });
